@@ -21,4 +21,9 @@ class Provider extends Model
         'address',
         'phone',
     ];
+
+    //Function Relation Provider - Product
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
 }
