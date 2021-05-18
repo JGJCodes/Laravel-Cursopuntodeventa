@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Purchase extends Model
 {
     use HasFactory;
 
@@ -15,29 +15,27 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'code',
-        'name',
-        'stock',
-        'image',
-        'sell_price',
-        'status',
-        'category_id',
         'provider_id',
+        'user_id',
+        'purchase_date',
+        'tax',
+        'total',
+        'status',
+        'picture',
     ];
 
-    //Function Relation Product - Category
-    public function category(){
-        return $this->belongsTo(Category::class);
+    //Function Relation Purchase - User
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
-    //Function Relation Product - Provider
+    //Function Relation Purchase - Provider
     public function provider(){
         return $this->belongsTo(Provider::class);
     }
 
-    //Function Relation Product - PurchaseDetail
+    //Function Relation Purchase - PurchaseDetail
     public function purchaseDetails(){
         return $this->hasMany(PurchaseDetails::class);
     }
-
 }

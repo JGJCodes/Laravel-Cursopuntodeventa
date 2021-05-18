@@ -17,11 +17,11 @@ class CreateProvidersTable extends Migration
 
             $table->id();
 
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('email');
             $table->string('ruc_number');
             $table->string('address')->nullable();
-            $table->phone('phone');
+            $table->string('phone')->unique();
 
             $table->timestamps();
         });
