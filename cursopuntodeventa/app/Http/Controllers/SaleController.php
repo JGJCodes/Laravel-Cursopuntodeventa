@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchase;
-use App\Models\PurchaseDetails;
-use App\Models\Provider;
+use App\Models\Client;
+use App\Models\Sale;
 use Illuminate\Http\Request;
-use Illuminate\Http\Purchase\StoreRequest;
-use Illuminate\Http\Purchase\UpdateRequest;
+use Illuminate\Http\Sale\StoreRequest;
+use Illuminate\Http\Sale\UpdateRequest;
 
-class PurchaseController extends Controller
+class SaleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +17,8 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::get();
-        return view('admin.purchase.index', compact('purchases'));
+        $sales = Sale::get();
+        return view('admin.sale.index', compact('sales'));
     }
 
     /**
@@ -29,8 +28,8 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $providers = Provider::get();
-        return view('admin.purchase.create',compact('providers'));
+        $clients = Client::get();
+        return view('admin.sale.create',compact('clients'));
     }
 
     /**
@@ -41,50 +40,51 @@ class PurchaseController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $purchase = Purchase::create($request->all());
+        $sale = Sale::create($request->all());
 
         foreach($request->product_id as $key => $product){
             $results[]=array(
                 "product_id"=>$request->product_id[$key],
                 "quantity"=>$request->quantity[$key],
-                "price"=>$request->price[$key]
+                "price"=>$request->price[$key],
+                "discount"=>$request->discount[$key]
             );
         }
 
-        $purchase->purchaseDetails()->createMany($results);
-        return redirect()->route('purchases.index');
+        $sale->saleDetails()->createMany($results);
+        return redirect()->route('sales.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Purchase  $purchase
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function show(Purchase $purchase)
+    public function show(Sale $sale)
     {
-        return view('admin.purchase.show', compact('purchase'));
+        return view('admin.sale.show', compact('sale'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Purchase  $purchase
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function edit(Purchase $purchase)
+    public function edit(Sale $sale)
     {
-        return view('admin.purchase.edit', compact('purchase'));
+        return view('admin.sale.edit', compact('sale'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Purchase  $purchase
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRequest $request, Purchase $purchase)
+    public function update(UpdateRequest $request, Sale  $sale)
     {
        //  $purchase->update($request->all());
        // return redirect()->route('purchases.index');
@@ -93,10 +93,10 @@ class PurchaseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Purchase  $purchase
+     * @param  \App\Models\Sale  $sale
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Purchase $purchase)
+    public function destroy(Sale  $sale)
     {
        // $purchase->delete();
        // return redirect()->route('purchases.index');
